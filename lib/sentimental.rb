@@ -110,7 +110,7 @@ class Sentimental
     # load the word file
     file = File.new(filename)
     while (line = file.gets)
-      parsedline = line.chomp.split("\t")
+      parsedline = line.chomp.split(/\s/)
       sentiscore = parsedline[0]
       text = parsedline[1]
       @@sentihash[text] = sentiscore.to_f
