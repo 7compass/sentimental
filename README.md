@@ -46,10 +46,10 @@ analyzer.get_sentiment 'I really like ruby'
 # You can make new analyzers with individual thresholds:
 analyzer = Sentimental.new(0.9)
 analyzer.get_sentiment 'I love ruby'
-=> :positive
+#=> :positive
 
 analyzer.get_sentiment 'I like ruby'
-=> :neutral
+#=> :neutral
  
 analyzer.get_sentiment 'I really like ruby'
 #=> :neutral
