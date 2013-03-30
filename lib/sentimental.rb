@@ -64,18 +64,10 @@ class Sentimental
     #tokenize the string, also throw away some punctuation
     tokens = string.to_s.downcase.split(/[\s\!\?\.]+/)
     
-    for token in tokens do
+    tokens.each do |token|
       sentiment_value = @@sentihash[token]
-      
-      if sentiment_value
-        
-        # for debugging purposes
-        #puts "#{token} => #{sentiment_value}"
-        
-        sentiment_total += sentiment_value
-      end
+      sentiment_total += sentiment_value if sentiment_value
     end
-
     sentiment_total
   end
 
