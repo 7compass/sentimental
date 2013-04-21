@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name         = 'sentimental'
-  s.version      = '1.0.1'
-  s.date         = '2013-03-29'
+  s.version      = '1.0.2'
+  s.date         = Date.today
   s.summary      = "Simple sentiment analysis"
   s.description  = "A simple sentiment analysis gem"
   s.authors      = ["Jeff Emminger", "Christopher MacLellan"]
