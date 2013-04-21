@@ -44,7 +44,7 @@
 #   => :neutral
 # 
 class Sentimental
-  @@sentihash = {}
+  @@sentihash = Hash.new(0.0)
   @@threshold = 0.0
 
   def initialize(threshold = nil)
@@ -65,8 +65,7 @@ class Sentimental
     tokens = string.to_s.downcase.split(/[\s\!\?\.]+/)
     
     tokens.each do |token|
-      sentiment_value = @@sentihash[token]
-      sentiment_total += sentiment_value if sentiment_value
+      sentiment_total += @@sentihash[token]
     end
     sentiment_total
   end
