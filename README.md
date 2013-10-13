@@ -77,3 +77,8 @@ scores and tokens, e.g.:
 
 Based largely on Christopher MacLellan's script:
 https://github.com/cmaclell/Basic-Tweet-Sentiment-Analyzer
+
+## Changes
+- 2013-10-13 Adding :-) to slang
+
+
