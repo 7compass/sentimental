@@ -22,6 +22,12 @@ describe Sentimental do
       @analyzer.get_score('I hate ruby').should eq(-0.4375)
     end
 
+    it "sentences are scored equally regardless of punctuation" do
+      score1 = @analyzer.get_score('I love ruby')
+      score2 = @analyzer.get_score('#$%^I@ love! ruby!@#$%^&*()')
+      score1.should eq(score2)
+    end
+
   end
 
 end

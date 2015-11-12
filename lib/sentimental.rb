@@ -62,7 +62,7 @@ class Sentimental
     sentiment_total = 0.0
 
     #tokenize the string, also throw away some punctuation
-    tokens = string.to_s.downcase.split(/[\s\!\?\.]+/)
+    tokens = string.to_s.downcase.split(/\W*\s+\W*|^\W+|\W+$/)
 
     tokens.each do |token|
       sentiment_total += @@sentihash[token]
