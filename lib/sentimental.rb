@@ -6,7 +6,7 @@
 # Copyright: Christopher MacLellan 2010
 # Description: This code adds functions to the string class for calculating
 #              the sentivalue of strings. It is not called directly by the
-#              tweet-search-sentiment.rb program but is included for possible 
+#              tweet-search-sentiment.rb program but is included for possible
 #              future use.
 #
 # This program is free software: you can redistribute it and/or modify
@@ -23,26 +23,26 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# 
+#
 # In an initializer, you can initialize some global defaults:
-# 
+#
 #   Sentimental.load_defaults
 #   Sentimental.threshold = 0.1
-# 
+#
 # Then create an instance for usage:
-# 
+#
 #   analyzer = Sentimental.new
 #   analyzer.get_sentiment('I love your service')
 #   => :positive
-# 
+#
 # You can make new analyzers with individual thresholds:
-# 
+#
 #   analyzer = Sentimental.new(0.9)
 #   analyzer.get_sentiment('I love your service')
 #   => :positive
 #   analyzer.get_sentiment('I like your service')
 #   => :neutral
-# 
+#
 class Sentimental
   @@sentihash = Hash.new(0.0)
   @@threshold = 0.0
@@ -63,7 +63,7 @@ class Sentimental
 
     #tokenize the string, also throw away some punctuation
     tokens = string.to_s.downcase.split(/[\s\!\?\.]+/)
-    
+
     tokens.each do |token|
       sentiment_total += @@sentihash[token]
     end
@@ -83,7 +83,7 @@ class Sentimental
       :neutral
     end
   end
-  
+
   # Loads the default sentiment files
   def self.load_defaults
     load_senti_file(File.dirname(__FILE__) + '/sentiwords.txt')
@@ -112,5 +112,5 @@ class Sentimental
   def self.threshold=(threshold)
     @@threshold = threshold
   end
-  
-end 
+
+end
