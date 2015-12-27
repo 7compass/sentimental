@@ -73,6 +73,10 @@ scores and tokens, e.g.:
 
     gem install sentimental
 
+## License
+
+MIT License
+
 ## Credits
 
 Based largely on Christopher MacLellan's script:

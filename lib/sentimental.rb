@@ -1,7 +1,6 @@
 
 # Based on code from https://github.com/cmaclell/Basic-Tweet-Sentiment-Analyzer
 
-
 #############################################################################
 # Copyright: Christopher MacLellan 2010
 # Description: This code adds functions to the string class for calculating
@@ -61,7 +60,7 @@ class Sentimental
   def get_score(string)
     sentiment_total = 0.0
 
-    #tokenize the string, also throw away some punctuation
+    # tokenize the string, also throw away some punctuation
     tokens = string.to_s.downcase.split(/\W*\s+\W*|^\W+|\W+$/)
 
     tokens.each do |token|
@@ -112,5 +111,4 @@ class Sentimental
   def self.threshold=(threshold)
     @@threshold = threshold
   end
-
 end
