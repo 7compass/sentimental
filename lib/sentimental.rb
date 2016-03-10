@@ -1,12 +1,15 @@
 class Sentimental
-  attr_accessor :threshold, :word_scores
+  attr_accessor :threshold, :word_scores, :neutral_regexps
 
-  def initialize(threshold: 0, word_scores: nil)
+  def initialize(threshold: 0, word_scores: nil, neutral_regexps: [])
     @word_scores = Hash.new(0.0) || word_scores
     @threshold = threshold
+    @neutral_regexps = neutral_regexps
   end
 
   def score(string)
+    return 0 if neutral_regexps.any? {|regexp| string =~ regexp}
+
     extract_words(string).inject(0) do |score, token| 
       score += word_scores[token]
     end

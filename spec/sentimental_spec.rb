@@ -54,5 +54,19 @@ describe Sentimental do
         expect(analyzer.score(text_with_punctuation)).to eq analyzer.score(text)
       end
     end
+
+    context "when there is some neutral regexp" do
+      let(:text_neutral) {"Do you love ruby?"}
+      let(:text) {"I love ruby"}
+
+      before do
+        analyzer.neutral_regexps << /\?\s*$/
+      end
+
+      it "scores it to 0" do
+        expect(analyzer.score(text_neutral)).to eq 0
+        expect(analyzer.score(text)).not_to eq 0
+      end
+    end
   end
 end
