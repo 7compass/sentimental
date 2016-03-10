@@ -3,8 +3,8 @@ Gem::Specification.new do |spec|
   spec.version      = '1.0.4'
   spec.summary      = 'Simple sentiment analysis'
   spec.description  = 'A simple sentiment analysis gem'
-  spec.authors      = ['Jeff Emminger', 'Christopher MacLellan']
-  spec.email        = ['jeff@7compass.com']
+  spec.authors      = ['Jeff Emminger', 'Christopher MacLellan', 'Denis Pasin']
+  spec.email        = ['jeff@7compass.com', 'denis@hellojam.fr']
   spec.homepage     = 'https://github.com/7compass/sentimental'
   spec.license      = 'MIT'
   
