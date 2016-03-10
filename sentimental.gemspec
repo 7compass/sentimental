@@ -1,15 +1,19 @@
-Gem::Specification.new do |s|
-  s.name         = 'sentimental'
-  s.version      = '1.0.4'
-  s.date         = Date.today
-  s.summary      = 'Simple sentiment analysis'
-  s.description  = 'A simple sentiment analysis gem'
-  s.authors      = ['Jeff Emminger', 'Christopher MacLellan']
-  s.email        = 'jeff@7compass.com'
-  s.license      = 'MIT'
-  s.files        = Dir['lib/*'] << 'README.md'
-  s.homepage     = 'https://github.com/7compass/sentimental'
-  s.platform     = Gem::Platform::RUBY
-  s.require_path = '.'
-  s.require_paths << 'lib'
+Gem::Specification.new do |spec|
+  spec.name         = 'sentimental'
+  spec.version      = '1.1.0'
+  spec.summary      = 'Simple sentiment analysis'
+  spec.description  = 'A simple sentiment analysis gem'
+  spec.authors      = ['Jeff Emminger', 'Christopher MacLellan', 'Denis Pasin']
+  spec.email        = ['jeff@7compass.com', 'denis@hellojam.fr']
+  spec.homepage     = 'https://github.com/7compass/sentimental'
+  spec.license      = 'MIT'
+  
+  spec.files         = `git ls-files`.split($/)
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.require_paths = ['lib']
+  
+  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec", ">= 3.0.0"
 end
