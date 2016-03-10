@@ -2,32 +2,57 @@ require_relative "../lib/sentimental"
 
 describe Sentimental do
 
-   before :each do
-    Sentimental.load_defaults
-    Sentimental.threshold = 0.1
-    @analyzer = Sentimental.new
+  before :each do
+    analyzer.load_defaults
   end
 
-  describe "#get_score" do
+  let(:analyzer) { Sentimental.new(threshold: 0.1) }
 
-    it "returns a score of 0.925 when passed 'I love ruby'" do
-      @analyzer.get_score('I love ruby').should eq(0.925)
+  describe "#score" do
+    subject do
+      analyzer.score(text)
     end
 
-    it "returns a score of 0.0 when passed 'I like ruby'" do
-      @analyzer.get_score('I like ruby').should eq(0.0)
+    context "when the text is postive" do
+      let(:text) {'I love ruby'}
+
+      it 'returns a positive score' do
+        expect(subject).to be > 0
+      end
     end
 
-    it "returns a score of -0.4375 when passed 'I hate ruby'" do
-      @analyzer.get_score('I hate ruby').should eq(-0.4375)
+    context "when the text is neutral" do
+      let(:text) {'I like ruby'}
+
+      it 'returns a neutral score' do
+        expect(subject).to eq 0
+      end
     end
 
-    it "sentences are scored equally regardless of punctuation" do
-      score1 = @analyzer.get_score('I love ruby')
-      score2 = @analyzer.get_score('#$%^I@ love! ruby!@#$%^&*()')
-      score1.should eq(score2)
+    context "when the text is negative" do
+      let(:text) {'I hate ruby'}
+
+      it 'returns a negative score' do
+        expect(subject).to be < 0
+      end
     end
 
+    context "when the text has smiley" do
+      let(:text) {'I love ruby'}
+      let(:text_with_smiley) {'I love ruby :-)'}
+
+      it 'scores it' do
+        expect(analyzer.score(text_with_smiley)).to be > analyzer.score(text)
+      end
+    end
+
+    context "when the text has punctuation" do
+      let(:text) {'I love ruby'}
+      let(:text_with_punctuation) {'I love, ruby'}
+
+      it 'removes it' do
+        expect(analyzer.score(text_with_punctuation)).to eq analyzer.score(text)
+      end
+    end
   end
-
 end
