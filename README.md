@@ -5,12 +5,12 @@ Simple sentiment analysis with Ruby
 ## How it works
 
 Sentences are tokenized, tokens are assigned a numerical score
-for their average sentiment.  The total score is then used to 
+for their average sentiment.  The total score is then used to
 determine the overall sentiment in relation to the thresold.
 
 For example, the default threshold is 0.0.  If a sentence has
 a score of 0, it is deemed "neutral".  Higher than the thresold
-is "positive", lower is "negative".  
+is "positive", lower is "negative".
 
 If you set the threshold to a non-zero amount, e.g. 0.25:
 
@@ -23,39 +23,41 @@ If you set the threshold to a non-zero amount, e.g. 0.25:
 
 ```ruby
 
+# Create an instance for usage
+analyzer = Sentimental.new
+
 # Load the default sentiment dictionaries
-Sentimental.load_defaults
+analyzer.load_defaults
 
 # And/or load your own dictionaries
-Sentimental.load_senti_file('path/to/your/file.txt')
+analyzer.load_senti_file('path/to/your/file.txt')
 
 # Set a global threshold
-Sentimental.threshold = 0.1
+analyzer.threshold = 0.1
 
-# Create an instance for usage:
-analyzer = Sentimental.new
-analyzer.get_sentiment 'I love ruby'
+# Use your analyzer
+analyzer.sentiment 'I love ruby'
 #=> :positive
 
-analyzer.get_sentiment 'I like ruby'
+analyzer.sentiment 'I like ruby'
 #=> :neutral
 
-analyzer.get_sentiment 'I really like ruby'
+analyzer.sentiment 'I really like ruby'
 #=> :positive
 
 # You can make new analyzers with individual thresholds:
-analyzer = Sentimental.new(0.9)
-analyzer.get_sentiment 'I love ruby'
+analyzer = Sentimental.new(threshold: 0.9)
+analyzer.sentiment 'I love ruby'
 #=> :positive
 
-analyzer.get_sentiment 'I like ruby'
+analyzer.sentiment 'I like ruby'
 #=> :neutral
- 
-analyzer.get_sentiment 'I really like ruby'
+
+analyzer.sentiment 'I really like ruby'
 #=> :neutral
 
 # Get the numerical score of a string:
-analyzer.get_score 'I love ruby'
+analyzer.score 'I love ruby'
 #=> 0.925
 
 ```
@@ -69,7 +71,7 @@ scores and tokens, e.g.:
     0.0 Meh
     -1.0 Horrible
 
-## Installation 
+## Installation
 
     gem install sentimental
 
