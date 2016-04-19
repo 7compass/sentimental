@@ -65,6 +65,35 @@ describe Sentimental do
     end
   end
 
+  describe "n-grams" do
+    let(:word_scores) { nil }
+    subject do
+      Sentimental.new(word_scores: word_scores, ngrams: 3)
+    end
+
+    it "is initialized by ngrams param" do
+      expect(subject.ngrams).to eq 3
+    end
+    
+    context "there is n-grams in the dictionary" do
+      let(:word_scores) {{"happy hour" => 1.0, "not happy hour" => -5.0}}
+      let(:text) { "why not happy hour, but happy so hour?" }
+
+      it "update scores regarding to n-grams" do
+        expect(subject.score(text)).to eq -4
+      end
+    end
+
+    context "there's n-grams longer than specified in dictionary" do
+      let(:word_scores) {{"happy hour" => 1.0, "not so happy hour" => -5.0}}
+      let(:text) { "why not so happy hour ?" }
+
+      it "ignores the lines" do
+        expect(subject.score(text)).to eq 1
+      end
+    end
+  end
+
   describe "scoring in a normal context" do
     subject do
       analyzer.score(text)
