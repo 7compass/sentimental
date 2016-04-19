@@ -2,7 +2,7 @@ class Sentimental
   attr_accessor :threshold, :word_scores, :neutral_regexps
 
   def initialize(threshold: 0, word_scores: nil, neutral_regexps: [])
-    @word_scores = Hash.new(0.0) || word_scores
+    @word_scores = word_scores || Hash.new(0.0)
     @threshold = threshold
     @neutral_regexps = neutral_regexps
   end
@@ -27,13 +27,17 @@ class Sentimental
     end
   end
 
+  def classify(string)
+    sentiment(string) == :positive
+  end
+
   def load_defaults
     ['sentiwords', 'sentislang'].each do |filename|
-      load_senti_file(File.dirname(__FILE__) + "/../data/#{filename}.txt")
+      load_from(File.dirname(__FILE__) + "/../data/#{filename}.txt")
     end
   end
 
-  def load_senti_file(filename)
+  def load_from(filename)
     File.open(filename) do |file|
       file.each_line do |line|
         parsed_line = line.chomp.split(/\s+/)
@@ -43,6 +47,8 @@ class Sentimental
       end
     end
   end
+  
+  alias_method :load_senti_file, :load_from
 
   private
 
