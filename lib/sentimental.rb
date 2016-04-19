@@ -46,10 +46,11 @@ class Sentimental
   def load_from(filename)
     File.open(filename) do |file|
       file.each_line do |line|
-        parsed_line = line.chomp.scan(/^([^\s]+)\s+(.+)/).first
-        sentiscore = parsed_line[0]
-        text = parsed_line[1]
-        word_scores[text] = sentiscore.to_f
+        if parsed_line = (line.chomp.scan(/^([^\s]+)\s+(.+)/).first)
+          sentiscore = parsed_line[0]
+          text = parsed_line[1]
+          word_scores[text] = sentiscore.to_f
+        end
       end
     end
   end
@@ -70,7 +71,7 @@ class Sentimental
   end
 
   def ngramify(words, max_size)
-    return [words.join(" ")] if words.size == max_size
+    return [words.join(" ")] if words.size <= max_size
     tail = words.last(words.size - 1)
     
     [words.first(max_size).join(" ")] + ngramify(tail, max_size)
