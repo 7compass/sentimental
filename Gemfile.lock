@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sentimental (1.0.4)
+    sentimental (1.2.1)
 
 GEM
   remote: https://rubygems.org/

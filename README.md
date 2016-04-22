@@ -71,6 +71,19 @@ scores and tokens, e.g.:
     0.0 Meh
     -1.0 Horrible
 
+## N-grams
+
+You can parse n-grams of words by specifying their max size in the initializer:
+```
+  Sentimental.new(ngrams: 4)
+```
+
+The dictionary must have this format:
+
+    1.0 very happy
+    -2.0 no
+    0.0 meh
+
 ## Installation
 
     gem install sentimental
