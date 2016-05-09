@@ -1,0 +1,12 @@
+AllCops:
+  Exclude:
+    - sentimental.gemspec
+
+Documentation:
+  Enabled: false
+
+LineLength:
+  Max: 99
+
+FrozenStringLiteralComment:
+  Enabled: false
