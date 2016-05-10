@@ -3,12 +3,14 @@ require_relative 'file_reader'
 class Sentimental
   include FileReader
 
-  attr_accessor :threshold, :word_scores, :neutral_regexps, :ngrams
+  attr_accessor :threshold, :word_scores, :neutral_regexps, :ngrams, :influencers
 
-  def initialize(threshold: 0, word_scores: nil, neutral_regexps: [], ngrams: 1)
+  def initialize(threshold: 0, word_scores: nil, neutral_regexps: [], ngrams: 1, influencers: nil)
     @ngrams = ngrams.to_i.abs if ngrams.to_i >= 1
     @word_scores = word_scores || {}
+    @influencers = influencers || {}
     @word_scores.default = 0.0
+    @influencers.default = 0.0
     @threshold = threshold
     @neutral_regexps = neutral_regexps
   end
@@ -16,9 +18,13 @@ class Sentimental
   def score(string)
     return 0 if neutral_regexps.any? { |regexp| string =~ regexp }
 
-    extract_words_with_n_grams(string).inject(0) do |score, token|
-      score + word_scores[token]
+    @influence = 0.0
+    @total_score = extract_words_with_n_grams(string).inject(0) do |score, token|
+      @influence += influencers[token]
+      score += word_scores[token]
     end
+
+    @total_score + influence_score
   end
 
   def sentiment(string)
@@ -41,10 +47,19 @@ class Sentimental
     %w(slang en_words).each do |filename|
       load_from_json(File.dirname(__FILE__) + "/../data/#{filename}.json")
     end
+    load_influencers(File.dirname(__FILE__) + '/../data/influencers.txt')
   end
 
   def load_from(filename)
-    word_scores.merge!(hash_from_txt(filename))
+    load_to(filename, word_scores)
+  end
+
+  def load_influencers(filename)
+    load_to(filename, influencers)
+  end
+
+  def load_to(filename, hash)
+    hash.merge!(hash_from_txt(filename))
   end
 
   def load_from_json(filename)
@@ -53,6 +68,8 @@ class Sentimental
 
   alias load_senti_file load_from
   alias load_senti_json load_from_json
+
+  alias_method :load_senti_file, :load_from
 
   private
 
@@ -72,5 +89,9 @@ class Sentimental
     tail = words.last(words.size - 1)
 
     [words.first(max_size).join(' ')] + ngramify(tail, max_size)
+  end
+
+  def influence_score
+    @total_score < 0.0 ? -@influence : +@influence
   end
 end

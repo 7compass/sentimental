@@ -1,11 +1,57 @@
 require_relative '../lib/sentimental'
 
 describe Sentimental do
-  before :each do
-    analyzer.load_defaults
+  let(:root) { File.expand_path(File.join(File.dirname(__FILE__), '..')) }
+  let(:loader) { Sentimental.new(threshold: 0.1) }
+
+  describe '#load_defaults' do
+    it 'loads words and influencers' do
+      sentiwords = "#{root}/data/en_words.json"
+      sentislang = "#{root}/data/slang.json"
+      influencers = "#{root}/data/influencers.txt"
+      words_count = JSON.load(File.open(sentiwords)).keys.count
+      slang_count = JSON.load(File.open(sentislang)).keys.count
+      influence_count = File.open(influencers, &:count)
+
+      loader.load_defaults
+
+      expect(loader.word_scores.count).to eq words_count + slang_count
+      expect(loader.influencers.count).to eq influence_count
+    end
+  end
+
+  describe '#load_from' do
+    it 'is backwards compatible' do
+      filename = "#{root}/data/sentislang.txt"
+      loader.load_from(filename)
+      count = File.open(filename, &:count)
+
+      expect(loader.word_scores.count).to eq count
+    end
+
+    it 'loads word_scores' do
+      filename = "#{root}/data/sentislang.txt"
+      loader.load_from(filename)
+      count = File.open(filename, &:count)
+
+      expect(loader.word_scores.count).to eq count
+      expect(loader.influencers.count).to eq 0
+    end
+
+    it 'loads influencers' do
+      filename = "#{root}/data/influencers.txt"
+      loader.load_influencers(filename)
+      count = File.open(filename, &:count)
+
+      expect(loader.word_scores.count).to eq 0
+      expect(loader.influencers.count).to eq count
+    end
   end
 
   let(:analyzer) { Sentimental.new(threshold: 0.1) }
+  before :each do
+    analyzer.load_defaults
+  end
 
   describe '#sentiment' do
     it 'returns :positive when the score > threshold' do
@@ -138,6 +184,30 @@ describe Sentimental do
       it 'removes it' do
         expect(analyzer.score(text_with_punctuation)).to eq analyzer.score(text)
       end
+    end
+  end
+
+  describe 'influencers' do
+    let(:positive) { 'I love open source project' }
+    let(:positive_influence) { 'I really love open source projects' }
+    let(:neutral) { 'Ruby is cool' }
+    let(:neutral_influence) { 'Ruby is really cool' }
+    let(:negative) { 'I hate this' }
+    let(:negative_influence) { 'I really hate this' }
+
+    it 'influences positively' do
+      expect(analyzer.score(positive_influence))
+        .to be > analyzer.score(positive)
+    end
+
+    it 'influence psitively for neutral' do
+      expect(analyzer.score(neutral_influence))
+        .to be > analyzer.score(neutral)
+    end
+
+    it 'influences negatively' do
+      expect(analyzer.score(negative_influence))
+        .to be < analyzer.score(negative)
     end
   end
 end
