@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sentimental (1.2.1)
+    sentimental (1.3.0)
       json (~> 1.8, >= 1.8.3)
 
 GEM
@@ -46,6 +46,3 @@ DEPENDENCIES
   rspec (>= 3.0.0)
   rubocop (~> 0.40, >= 0.40.0)
   sentimental!
-
-BUNDLED WITH
-   1.10.6
