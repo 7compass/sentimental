@@ -20,24 +20,18 @@ describe Sentimental do
     end
   end
 
-  describe '#load_from' do
-    it 'is backwards compatible' do
-      filename = "#{root}/data/sentislang.txt"
-      loader.load_from(filename)
-      count = File.open(filename, &:count)
-
-      expect(loader.word_scores.count).to eq count
-    end
-
+  describe '#load_from_json' do
     it 'loads word_scores' do
-      filename = "#{root}/data/sentislang.txt"
-      loader.load_from(filename)
-      count = File.open(filename, &:count)
-
-      expect(loader.word_scores.count).to eq count
+      filename = "#{root}/data/slang.json"
+      loader.load_from_json(filename)
+      slang_count = JSON.load(File.open(filename)).keys.count
+      
+      expect(loader.word_scores.count).to eq slang_count
       expect(loader.influencers.count).to eq 0
     end
+  end
 
+  describe '#load_influencers' do
     it 'loads influencers' do
       filename = "#{root}/data/influencers.txt"
       loader.load_influencers(filename)
