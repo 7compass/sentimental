@@ -18,13 +18,11 @@ class Sentimental
   def score(string)
     return 0 if neutral_regexps.any? { |regexp| string =~ regexp }
 
-    @influence = 0.0
-    @total_score = extract_words_with_n_grams(string).inject(0) do |score, token|
-      @influence += influencers[token]
-      score += word_scores[token]
-    end
+    initial_scoring = {score: 0, current_influencer: 1.0}
 
-    @total_score + influence_score
+    extract_words_with_n_grams(string).inject(initial_scoring) do |current_scoring, word|
+      process_word(current_scoring, word)
+    end[:score]
   end
 
   def sentiment(string)
@@ -47,7 +45,7 @@ class Sentimental
     %w(slang en_words).each do |filename|
       load_from_json(File.dirname(__FILE__) + "/../data/#{filename}.json")
     end
-    load_influencers(File.dirname(__FILE__) + '/../data/influencers.txt')
+    load_influencers_from_json(File.dirname(__FILE__) + '/../data/influencers.json')
   end
 
   def load_from(filename)
@@ -66,12 +64,26 @@ class Sentimental
     word_scores.merge!(hash_from_json(filename))
   end
 
+  def load_influencers_from_json(filename)
+    influencers.merge!(hash_from_json(filename))
+  end
+
   alias load_senti_file load_from
   alias load_senti_json load_from_json
 
   alias_method :load_senti_file, :load_from
 
   private
+
+  def process_word(scoring, word)
+    if influencers[word] > 0
+      scoring[:current_influencer] *= influencers[word]
+    else
+      scoring[:score] += word_scores[word] * scoring[:current_influencer]
+      scoring[:current_influencer] = 1.0
+    end
+    scoring
+  end
 
   def extract_words(string)
     string.to_s.downcase.scan(/([\w']+|\S{2,})/).flatten

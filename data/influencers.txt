@@ -1,3 +1,0 @@
-0.625 extremely
-0.4688	really
--0.1  pretty
