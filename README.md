@@ -4,9 +4,9 @@ Simple sentiment analysis with Ruby
 
 ## How it works
 
-Sentences are tokenized, tokens are assigned a numerical score
+Sentences are tokenized and tokens are assigned a numerical score
 for their average sentiment.  The total score is then used to
-determine the overall sentiment in relation to the thresold.
+determine the overall sentiment in relation to the threshold.
 
 For example, the default threshold is 0.0.  If a sentence has
 a score of 0, it is deemed "neutral".  Higher than the thresold
