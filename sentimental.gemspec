@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name         = 'sentimental'
-  spec.version      = '1.4.0'
+  spec.version      = '1.4.1'
   spec.summary      = 'Simple sentiment analysis'
   spec.description  = 'A simple sentiment analysis gem'
   spec.authors      = ['Jeff Emminger', 'Christopher MacLellan', 'Denis Pasin']
