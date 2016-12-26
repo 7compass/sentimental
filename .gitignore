@@ -2,3 +2,5 @@
 *.DS_Store
 
 spec/test_data/**/*
+
+Gemfile.lock
