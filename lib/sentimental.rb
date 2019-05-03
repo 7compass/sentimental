@@ -91,16 +91,9 @@ class Sentimental
 
   def extract_words_with_n_grams(string)
     words = extract_words(string)
-    (1..ngrams).to_a.map do |ngram_size|
-      ngramify(words, ngram_size)
-    end.flatten
-  end
-
-  def ngramify(words, max_size)
-    return [words.join(' ')] if words.size <= max_size
-    tail = words.last(words.size - 1)
-
-    [words.first(max_size).join(' ')] + ngramify(tail, max_size)
+    1.upto(ngrams).map do |number|
+      words.each_cons(number).to_a
+    end.flatten(1).map { |word| word.join(" ") }
   end
 
   def influence_score
